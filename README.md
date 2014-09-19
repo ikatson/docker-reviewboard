@@ -49,13 +49,15 @@ You can install postgres either into a docker container, or whereever else.
 
 ### Install memcached
 
-1. Example: install locally on Debian/Ubuntu
+1. Example: install into a docker container
+
+        docker run --name memcached -d -p 11211 sylvainlasnier/memcached
+
+1. Example: install locally on Debian/Ubuntu.
 
         apt-get install memcached
 
-2. Example: install into a docker container
-
-        docker run --name memcached -d -p 11211 sylvainlasnier/memcached
+   Don't forget to make it listen on needed addresses by editing /etc/memcached.conf, but be careful not to open it for the whole world.
 
 ### Run reviewboard
 
@@ -64,7 +66,7 @@ If you installed postgres and memcached into the host machine, or even on any ot
 - **PGHOST** - the postgres host. Defaults to the value of PG_PORT_5432_TCP_ADDR.
 - **PGPORT** - the postgres port. Defaults to the value of PG_PORT_5432_TCP_PORT, or 5432, if it's empty.
 - **PGUSER** - the postgres user. Defaults to reviewboard.
-- **MEMCACHE** - memcache address in format *host:port*. Defaults to the value from linked "memcached" container.
+- **MEMCACHED** - memcache address in format *host:port*. Defaults to the value from linked "memcached" container.
 - **DOMAIN** - defaults to localhost.
 - **DEBUG** - if set, the django server will be launched in debug mode.
 
@@ -79,6 +81,6 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
         DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
-        docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHE="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+        docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 1. Go to the url, and login as ```admin:admin```, change the password and you are all set!

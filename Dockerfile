@@ -12,8 +12,9 @@ RUN pip install -U uwsgi
 
 ADD start.sh /start.sh
 ADD uwsgi.ini /uwsgi.ini
+ADD shell.sh /shell.sh
 
-RUN chmod +x start.sh
+RUN chmod +x start.sh shell.sh
 
 EXPOSE 8000
 

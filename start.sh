@@ -9,10 +9,10 @@ PGDB="${PGDB:-reviewboard}"
 PGPORT="${PGPORT:-$( echo "${PG_PORT_5432_TCP_PORT:-5432}" )}"
 PGHOST="${PGHOST:-$( echo "${PG_PORT_5432_TCP_ADDR:-127.0.0.1}" )}"
 
-# Get these variable either from MEMCACHE, or from
+# Get these variable either from MEMCACHED env var, or from
 # linked "memcached" container.
-MEMCACHED_LINKED_NOTCP="${MEMCACHE_PORT#tcp://}"
-MEMCACHE="${MEMCACHE:-$( echo "${MEMCACHED_LINKED_NOTCP:-127.0.0.1}" )}"
+MEMCACHED_LINKED_NOTCP="${MEMCACHED_PORT#tcp://}"
+MEMCACHED="${MEMCACHED:-$( echo "${MEMCACHED_LINKED_NOTCP:-127.0.0.1}" )}"
 
 DOMAIN="${DOMAIN:localhost}"
 DEBUG="$DEBUG"
@@ -30,7 +30,7 @@ if [[ ! -d /var/www/reviewboard ]]; then
         --db-host="$PGHOST" \
         --db-user="$PGUSER" \
         --db-pass="$PGPASSWORD" \
-        --cache-type=memcached --cache-info="$MEMCACHE" \
+        --cache-type=memcached --cache-info="$MEMCACHED" \
         --web-server-type=lighttpd --web-server-port=8000 \
         --admin-user=admin --admin-password=admin --admin-email=admin@example.com \
         /var/www/reviewboard/
