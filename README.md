@@ -13,36 +13,40 @@ If you want to build this yourself, just run
 
 ### Install PostgreSQL
 
-   You can install postgres either into a docker container, or whereever else.
+You can install postgres either into a docker container, or whereever else.
 
-   1. Example: install postgres into a docker container, and create a database for reviewboard.
+#### Example: install postgres into a docker container, and create a database for reviewboard.
+   
+```
+docker run -d --name some-postgres postgres
 
-       docker run -d --name some-postgres postgres
+# Create the database and user for reviewboard
+docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createuser reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createdb reviewboard -O reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+```
 
-       # Create the database and user for reviewboard
-       docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createuser reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
-       docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createdb reviewboard -O reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+#### Example: install postgres into the host machine
+   
+```
+apt-get install postgresql-server
 
-   1. Example: install postgres into the host machine
-
-       apt-get install postgresql-server
-
-       # Uncomment this to make postgres listen
-       # echo "listen_addresses = '*'" >> /etc/postgresql/VERSION/postgresql.conf
-       # invoke-rc.d postgresql restart
-       sudo -u postgres createuser reviewboard
-       sudo -u postgres createdb reviewboard -O reviewboard
-       sudo -u postgres psql -c "alter user reviewboard set password to 'SOME_PASSWORD'"
-
+# Uncomment this to make postgres listen
+# echo "listen_addresses = '*'" >> /etc/postgresql/VERSION/postgresql.conf
+# invoke-rc.d postgresql restart
+sudo -u postgres createuser reviewboard
+sudo -u postgres createdb reviewboard -O reviewboard
+sudo -u postgres psql -c "alter user reviewboard set password to 'SOME_PASSWORD'"
+    ```
+   
 ### Install memcached
 
-   1. Example: install locally on Debian/Ubuntu
+1. Example: install locally on Debian/Ubuntu
 
-       apt-get install memcached
+    ```apt-get install memcached```
 
-   2. Example: install into a docker container
+2. Example: install into a docker container
 
-       docker run -name memcached
+    ```docker run -name memcached```
 
 ### Run reviewboard
 
@@ -59,6 +63,7 @@ Also, uwsgi accepts a any environment variables for it's configuration, e.g. ```
 
 1. Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
+    
     docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
 
 1. Example. Run with postgres and memcached installed on the host machine.
