@@ -1,9 +1,13 @@
 docker-reviewboard
 ==================
 
-Dockerized reviewboard.
+Dockerized reviewboard. This container follows Docker's best practices, and DOES NOT include sshd, supervisor, apache2, or any other services except the reviewboard itself which is run with ```uwsgi```.
 
-## Quickstart.
+The requirements are PostgreSQL and memcached, you can use either dockersized versions of them, or external ones, e.g. installed on the host machine, or even third-party machines.
+
+Below a
+
+## Quickstart. Run dockerized reviewboard with all dockerized dependencies.
 
     # Install postgres
     docker run -d --name rb-postgres postgres
