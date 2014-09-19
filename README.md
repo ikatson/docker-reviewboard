@@ -15,7 +15,7 @@ If you want to build this yourself, just run
 
 You can install postgres either into a docker container, or whereever else.
 
-#### Example: install postgres into a docker container, and create a database for reviewboard.
+1. Example: install postgres into a docker container, and create a database for reviewboard.
    
 ```
 docker run -d --name some-postgres postgres
@@ -25,7 +25,7 @@ docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createuse
 docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createdb reviewboard -O reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
 ```
 
-#### Example: install postgres into the host machine
+2. Example: install postgres into the host machine
    
 ```
 apt-get install postgresql-server
@@ -36,7 +36,7 @@ apt-get install postgresql-server
 sudo -u postgres createuser reviewboard
 sudo -u postgres createdb reviewboard -O reviewboard
 sudo -u postgres psql -c "alter user reviewboard set password to 'SOME_PASSWORD'"
-    ```
+```
    
 ### Install memcached
 
