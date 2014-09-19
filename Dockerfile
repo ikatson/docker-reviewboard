@@ -19,7 +19,7 @@ ADD uwsgi.ini /uwsgi.ini
 
 RUN chmod +x start.sh
 
-VOLUME /var/www/
-EXPOSE 8080
+# VOLUME /var/www/
+EXPOSE 8000
 
 CMD /start.sh
