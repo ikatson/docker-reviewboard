@@ -4,7 +4,7 @@ MAINTAINER igor.katson@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -y python-pip python-dev python-psycopg2
+RUN apt-get install -y python-pip python-dev python-psycopg2 git subversion mercurial
 
 RUN easy_install reviewboard
 
