@@ -3,6 +3,19 @@ docker-reviewboard
 
 Dockerized reviewboard.
 
+## Quickstart
+
+    # Install postgres
+    docker run -d --name rb-postgres postgres
+    docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createuser reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+    docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createdb reviewboard -O reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+    
+    # Install memcached
+    docker run --name memcached -d -p 11211 sylvainlasnier/memcached
+    
+    # Run reviewboard
+    docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
+
 ## Build
 
 If you want to build this yourself, just run
@@ -42,7 +55,7 @@ You can install postgres either into a docker container, or whereever else.
 
 2. Example: install into a docker container
 
-        docker run -name memcached
+        docker run --name memcached -d -p 11211 sylvainlasnier/memcached
 
 ### Run reviewboard
 
