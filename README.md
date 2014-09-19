@@ -3,24 +3,24 @@ docker-reviewboard
 
 Dockerized reviewboard.
 
-## Quickstart
+## Quickstart.
 
     # Install postgres
     docker run -d --name rb-postgres postgres
     docker run -it --link rb-postgres:postgres --rm postgres sh -c 'exec createuser reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
     docker run -it --link rb-postgres:postgres --rm postgres sh -c 'exec createdb reviewboard -O reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
-    
+
     # Install memcached
     docker run --name rb-memcached -d -p 11211 sylvainlasnier/memcached
-    
+
     # Run reviewboard
     docker run -it --link rb-postgres:pg --link rb-memcached:memcached -p 8000:8000 ikatson/reviewboard
 
-## Build
+## Build yourself if you want.
 
-If you want to build this yourself, just run
+If you want to build this yourself, just run this:
 
-    docker build -t 'ikatson/reviewboard' .
+    docker build -t 'ikatson/reviewboard' git://github.com/ikatson/docker-reviewboard.git
 
 ## Dependencies
 
@@ -37,7 +37,7 @@ You can install postgres either into a docker container, or whereever else.
         docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec createdb reviewboard -O reviewboard -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
 
 2. Example: install postgres into the host machine
-   
+
         apt-get install postgresql-server
 
         # Uncomment this to make postgres listen
@@ -46,7 +46,7 @@ You can install postgres either into a docker container, or whereever else.
         sudo -u postgres createuser reviewboard
         sudo -u postgres createdb reviewboard -O reviewboard
         sudo -u postgres psql -c "alter user reviewboard set password to 'SOME_PASSWORD'"
-   
+
 ### Install memcached
 
 1. Example: install locally on Debian/Ubuntu
