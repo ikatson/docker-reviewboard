@@ -25,26 +25,24 @@ You can install postgres either into a docker container, or whereever else.
 
 2. Example: install postgres into the host machine
    
-```
-apt-get install postgresql-server
+        apt-get install postgresql-server
 
-# Uncomment this to make postgres listen
-# echo "listen_addresses = '*'" >> /etc/postgresql/VERSION/postgresql.conf
-# invoke-rc.d postgresql restart
-sudo -u postgres createuser reviewboard
-sudo -u postgres createdb reviewboard -O reviewboard
-sudo -u postgres psql -c "alter user reviewboard set password to 'SOME_PASSWORD'"
-```
+        # Uncomment this to make postgres listen
+        # echo "listen_addresses = '*'" >> /etc/postgresql/VERSION/postgresql.conf
+        # invoke-rc.d postgresql restart
+        sudo -u postgres createuser reviewboard
+        sudo -u postgres createdb reviewboard -O reviewboard
+        sudo -u postgres psql -c "alter user reviewboard set password to 'SOME_PASSWORD'"
    
 ### Install memcached
 
 1. Example: install locally on Debian/Ubuntu
 
-    ```apt-get install memcached```
+        apt-get install memcached
 
 2. Example: install into a docker container
 
-    ```docker run -name memcached```
+        docker run -name memcached
 
 ### Run reviewboard
 
@@ -57,17 +55,17 @@ If you installed postgres and memcached into the host machine, or even on any ot
 - **DOMAIN** - defaults to localhost.
 - **DEBUG** - if set, the django server will be launched in debug mode.
 
-Also, uwsgi accepts a any environment variables for it's configuration, e.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
+Also, uwsgi accepts a any environment variables for it's configuration
+E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
 1. Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
-    
-    docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
+        docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
 
 1. Example. Run with postgres and memcached installed on the host machine.
 
-    DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
+        DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
-    docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHE="$DOCKER_HOST_IP" ikatson/reviewboard
+        docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHE="$DOCKER_HOST_IP" ikatson/reviewboard
 
 1. Go to the url, and login as ```admin:admin```, change the password and you are all set!
