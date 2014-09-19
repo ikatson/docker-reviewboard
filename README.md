@@ -79,6 +79,6 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
         DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
-        docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHE="$DOCKER_HOST_IP" ikatson/reviewboard
+        docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHE="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 1. Go to the url, and login as ```admin:admin```, change the password and you are all set!
