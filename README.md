@@ -5,7 +5,6 @@ Dockerized reviewboard. This container follows Docker's best practices, and DOES
 
 The requirements are PostgreSQL and memcached, you can use either dockersized versions of them, or external ones, e.g. installed on the host machine, or even third-party machines.
 
-Below a
 
 ## Quickstart. Run dockerized reviewboard with all dockerized dependencies.
 
@@ -61,18 +60,18 @@ You can install postgres either into a docker container, or whereever else.
 
         apt-get install memcached
 
-   Don't forget to make it listen on needed addresses by editing /etc/memcached.conf, but be careful not to open it for the whole world.
+   Don't forget to make it listen on needed addresses by editing /etc/memcached.conf, but be careful not to open memcached for the whole world.
 
 ### Run reviewboard
 
-If you installed postgres and memcached into the host machine, or even on any other machine, the container accepts the following environment variables:
+The container accepts the following environment variables:
 
-- **PGHOST** - the postgres host. Defaults to the value of PG_PORT_5432_TCP_ADDR.
-- **PGPORT** - the postgres port. Defaults to the value of PG_PORT_5432_TCP_PORT, or 5432, if it's empty.
-- **PGUSER** - the postgres user. Defaults to reviewboard.
-- **MEMCACHED** - memcache address in format *host:port*. Defaults to the value from linked "memcached" container.
-- **DOMAIN** - defaults to localhost.
-- **DEBUG** - if set, the django server will be launched in debug mode.
+- ```PGHOST``` - the postgres host. Defaults to the value of ```PG_PORT_5432_TCP_ADDR```, provided by the ```pg``` linked container.
+- ```PGPORT``` - the postgres port. Defaults to the value of ```PG_PORT_5432_TCP_PORT```, provided by the ```pg``` linked containe, or 5432, if it's empty.
+- ```PGUSER``` - the postgres user. Defaults to ```reviewboard```.
+- ```MEMCACHED``` - memcache address in format ```host:port```. Defaults to the value from linked ```memcached``` container.
+- ```DOMAIN``` - defaults to ```localhost```.
+- ```DEBUG``` - if set, the django server will be launched in debug mode.
 
 Also, uwsgi accepts a any environment variables for it's configuration
 E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
