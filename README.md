@@ -69,6 +69,8 @@ The container accepts the following environment variables:
 - ```PGHOST``` - the postgres host. Defaults to the value of ```PG_PORT_5432_TCP_ADDR```, provided by the ```pg``` linked container.
 - ```PGPORT``` - the postgres port. Defaults to the value of ```PG_PORT_5432_TCP_PORT```, provided by the ```pg``` linked containe, or 5432, if it's empty.
 - ```PGUSER``` - the postgres user. Defaults to ```reviewboard```.
+- ```PGDB``` - the postgres database. Defaults to ```reviewboard```.
+- ```PGPASSWORD``` - the postgres password. Defaults to ```reviewboard```.
 - ```MEMCACHED``` - memcache address in format ```host:port```. Defaults to the value from linked ```memcached``` container.
 - ```DOMAIN``` - defaults to ```localhost```.
 - ```DEBUG``` - if set, the django server will be launched in debug mode.
