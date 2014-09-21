@@ -18,7 +18,7 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
     # Run reviewboard
     docker run -it --link rb-postgres:pg --link rb-memcached:memcached -p 8000:8000 ikatson/reviewboard
     
-After that, go the url, e.g. ```http://localhost:8000/```, change the admin password, and change the location of your SMTP server so that the reviewboard can send emails.
+After that, go the url, e.g. ```http://localhost:8000/```, login as ```admin:admin```, change the admin password, and change the location of your SMTP server so that the reviewboard can send emails. You are all set!
 
 For details, read below.
 
