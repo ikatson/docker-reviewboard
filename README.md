@@ -5,7 +5,6 @@ Dockerized reviewboard. This container follows Docker's best practices, and DOES
 
 The requirements are PostgreSQL and memcached, you can use either dockersized versions of them, or external ones, e.g. installed on the host machine, or even third-party machines.
 
-
 ## Quickstart. Run dockerized reviewboard with all dockerized dependencies.
 
     # Install postgres
@@ -18,6 +17,10 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
 
     # Run reviewboard
     docker run -it --link rb-postgres:pg --link rb-memcached:memcached -p 8000:8000 ikatson/reviewboard
+    
+After that, go the url, e.g. ```http://localhost:8000/```, change the admin password, and change the location of your SMTP server so that the reviewboard can send emails.
+
+For details, read below.
 
 ## Build yourself if you want.
 
