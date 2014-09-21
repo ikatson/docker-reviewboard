@@ -62,7 +62,7 @@ You can install postgres either into a docker container, or whereever else.
 
    Don't forget to make it listen on needed addresses by editing /etc/memcached.conf, but be careful not to open memcached for the whole world.
 
-### Run reviewboard
+## Run reviewboard
 
 The container accepts the following environment variables:
 
@@ -78,14 +78,25 @@ The container accepts the following environment variables:
 Also, uwsgi accepts a any environment variables for it's configuration
 E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
-1. Example. Run with dockerized postgres and memcached from above, expose on port 8000:
+### Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
-        docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
+    docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
 
-1. Example. Run with postgres and memcached installed on the host machine.
+### Example. Run with postgres and memcached installed on the host machine.
 
-        DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
+    DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
-        docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+    docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+        
+Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
+        
+### Container SMTP settings.
 
-1. Go to the url, e.g. ```http://localhost:8000/```, and login as ```admin:admin```, change the password and you are all set!
+You should also change SMTP settings, so that the reviewboard can send emails. A good way to go is to set this to docker host's internal IP address, usually, ```172.17.42.1```).
+
+Don't forget to setup you mail agent to accept emails from docker.
+
+For example, if you use ```postfix```, you should change ```/etc/postfix/main.cf``` to contain something like the lines below:
+
+    mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 172.17.0.0/16
+    inet_interfaces = 127.0.0.1,172.17.42.1
