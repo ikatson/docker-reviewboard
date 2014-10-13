@@ -16,8 +16,8 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
     docker run --name rb-memcached -d -p 11211 sylvainlasnier/memcached
 
     # Run reviewboard
-    docker run -it --link rb-postgres:pg --link rb-memcached:memcached -p 8000:8000 ikatson/reviewboard
-    
+    docker run -it --link rb-postgres:pg --link rb-memcached:memcached -v <ssh-dir>:/.ssh -v <media-dir>:/media -p 8000:8000 ikatson/reviewboard
+
 After that, go the url, e.g. ```http://localhost:8000/```, login as ```admin:admin```, change the admin password, and change the location of your SMTP server so that the reviewboard can send emails. You are all set!
 
 For details, read below.
@@ -67,6 +67,11 @@ You can install postgres either into a docker container, or whereever else.
 
 ## Run reviewboard
 
+This container has two volume mount-points:
+
+- ```/.ssh``` - The default path to where reviewboard stores it's ssh keys.
+- ```/media``` - The default path to where reviewboard stores uploaded media.
+
 The container accepts the following environment variables:
 
 - ```PGHOST``` - the postgres host. Defaults to the value of ```PG_PORT_5432_TCP_ADDR```, provided by the ```pg``` linked container.
@@ -83,16 +88,16 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
 ### Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
-    docker run -it --link some-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
+    docker run -it --link some-postgres:pg --link memcached:memcached -v <ssh-dir>:/.ssh -v <media-dir>:/media  -p 8000:8000 ikatson/reviewboard
 
 ### Example. Run with postgres and memcached installed on the host machine.
 
     DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
-    docker run -it -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
-        
+    docker run -it -p 8000:8080 -v <ssh-dir>:/.ssh -v <media-dir>:/media -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+
 Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
-        
+
 ### Container SMTP settings.
 
 You should also change SMTP settings, so that the reviewboard can send emails. A good way to go is to set this to docker host's internal IP address, usually, ```172.17.42.1```).
