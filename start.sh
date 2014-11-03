@@ -4,7 +4,7 @@ PGUSER="${PGUSER:-reviewboard}"
 PGPASSWORD="${PGPASSWORD:-reviewboard}"
 PGDB="${PGDB:-reviewboard}"
 
-# Get these variables either from PGPORT and PGPORT, or from
+# Get these variables either from PGPORT and PGHOST, or from
 # linked "pg" container.
 PGPORT="${PGPORT:-$( echo "${PG_PORT_5432_TCP_PORT:-5432}" )}"
 PGHOST="${PGHOST:-$( echo "${PG_PORT_5432_TCP_ADDR:-127.0.0.1}" )}"
