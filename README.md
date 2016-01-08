@@ -71,6 +71,7 @@ This container has two volume mount-points:
 
 The container accepts the following environment variables:
 
+- ```ROOT``` - Root directory for the Reviewboard. 
 - ```PGHOST``` - the postgres host. Defaults to the value of ```PG_PORT_5432_TCP_ADDR```, provided by the ```pg``` linked container.
 - ```PGPORT``` - the postgres port. Defaults to the value of ```PG_PORT_5432_TCP_PORT```, provided by the ```pg``` linked container, or 5432, if it's empty.
 - ```PGUSER``` - the postgres user. Defaults to ```reviewboard```.

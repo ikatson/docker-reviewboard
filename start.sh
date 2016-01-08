@@ -21,10 +21,17 @@ mkdir -p /var/www/
 
 CONFFILE=/var/www/reviewboard/conf/settings_local.py
 
+# Fix the path to work properly if not ending to /.
+if [ "x$ROOT" != "x" ] && [ "${ROOT: -1}" != "/" ]; then
+     ROOT=$ROOT/
+fi
+
+echo $ROOT
+
 if [[ ! -d /var/www/reviewboard ]]; then
     rb-site install --noinput \
         --domain-name="$DOMAIN" \
-        --site-root=/ --static-url=static/ --media-url=media/ \
+        --site-root="/$ROOT" --static-url="static/" --media-url=media/ \
         --db-type=postgresql \
         --db-name="$PGDB" \
         --db-host="$PGHOST" \
