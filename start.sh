@@ -26,8 +26,6 @@ if [ "x$ROOT" != "x" ] && [ "${ROOT: -1}" != "/" ]; then
      ROOT=$ROOT/
 fi
 
-echo $ROOT
-
 if [[ ! -d /var/www/reviewboard ]]; then
     rb-site install --noinput \
         --domain-name="$DOMAIN" \
