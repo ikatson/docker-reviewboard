@@ -4,7 +4,7 @@ MAINTAINER igor.katson@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -y python-pip python-dev python-psycopg2 git subversion mercurial python-svn libpcre3 libpcre3-dev
+RUN apt-get install -y python-pip python-dev python-psycopg2 git subversion mercurial python-svn libpcre3 libpcre3-dev python-ldap
 
 # Since Reviewboard 2.5 it has a dependency for Pillow.
 # Since Pillow 3.0.0 installation fails if there is no libjpeg library [RFC: Require libjpeg and zlib by default](https://github.com/python-pillow/Pillow/issues/1412)
