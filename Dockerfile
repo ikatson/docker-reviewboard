@@ -10,7 +10,8 @@ RUN yum install -y epel-release && \
       uwsgi-plugin-python python-ldap python-pip python2-boto && \
     yum clean all
 
-# ReviewBoard runs on
+# ReviewBoard runs on django 1.6, so we need to use a compatible django-storages
+# version for S3 support.
 RUN pip install 'django-storages<1.3'
 
 ADD start.sh /start.sh
