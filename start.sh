@@ -15,7 +15,6 @@ MEMCACHED_LINKED_NOTCP="${MEMCACHED_PORT#tcp://}"
 MEMCACHED="${MEMCACHED:-$( echo "${MEMCACHED_LINKED_NOTCP:-127.0.0.1}" )}"
 
 DOMAIN="${DOMAIN:localhost}"
-DEBUG="$DEBUG"
 
 mkdir -p /var/www/
 
@@ -35,10 +34,9 @@ if [[ ! -d /var/www/reviewboard ]]; then
         --admin-user=admin --admin-password=admin --admin-email=admin@example.com \
         /var/www/reviewboard/
 fi
-if [[ "$DEBUG" ]]; then
+if [[ "${DEBUG}" ]]; then
     sed -i 's/DEBUG *= *False/DEBUG=True/' "$CONFFILE"
+    cat "${CONFFILE}"
 fi
-
-cat "$CONFFILE"
 
 exec uwsgi --ini /uwsgi.ini

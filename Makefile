@@ -1,0 +1,16 @@
+DOCKER_TAG ?= ikatson/reviewboard
+
+all: build
+
+build:
+	docker build -t "$(DOCKER_TAG)" .
+
+clean:
+	docker rm -f rb-data rb-memcached rb-postgres
+
+run:
+	docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres || true
+	docker run --name rb-memcached -d -p 11211 sylvainlasnier/memcached || true
+	docker run -v /root/.ssh -v /media --name rb-data busybox true || true
+	docker run -it --link rb-postgres:pg --link rb-memcached:memcached --volumes-from rb-data -p 8000:8000 "$(DOCKER_TAG)"
+
