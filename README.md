@@ -7,6 +7,13 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
 
 ## Quickstart. Run dockerized reviewboard with all dockerized dependencies, and persistent data in a docker container.
 
+    make  # if you want to build the image yourself
+    make run
+
+    # Go to http://127.0.0.1:8000/ (or your docker host) and login as admin:admin
+
+Alternatively, here are the commands to do the same manually.
+
     # Install postgres
     docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
 
@@ -14,7 +21,7 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
     docker run --name rb-memcached -d -p 11211 sylvainlasnier/memcached
 
     # Create a data container for reviewboard with ssh credentials and media.
-    docker run -v /.ssh -v /media --name rb-data busybox true
+    docker run -v /root/.ssh -v /media --name rb-data busybox true
 
     # Run reviewboard
     docker run -it --link rb-postgres:pg --link rb-memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
@@ -66,7 +73,7 @@ You can install postgres either into a docker container, or whereever else.
 
 This container has two volume mount-points:
 
-- ```/.ssh``` - The default path to where reviewboard stores it's ssh keys.
+- ```/root/.ssh``` - The default path to where reviewboard stores it's ssh keys.
 - ```/media``` - The default path to where reviewboard stores uploaded media.
 
 The container accepts the following environment variables:
@@ -86,7 +93,7 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 ### Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
     # Create a data container.
-    docker run -v /.ssh -v /media --name rb-data busybox true
+    docker run -v /root/.ssh -v /media --name rb-data busybox true
     docker run -it --link rb-postgres:pg --link memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
 
 ### Example. Run with postgres and memcached installed on the host machine.
@@ -94,7 +101,7 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
     DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
     # Create a data container.
-    docker run -v /.ssh -v /media --name rb-data busybox true
+    docker run -v /root/.ssh -v /media --name rb-data busybox true
     docker run -it -p 8000:8080 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
