@@ -1,6 +1,10 @@
 FROM centos:7
 MAINTAINER igor.katson@gmail.com
 
+# This is needed in for xz compression in case you can't install EPEL.
+# See https://github.com/ikatson/docker-reviewboard/issues/10
+RUN yum install -y pyliblzma
+
 RUN yum install -y epel-release && \
     yum install -y ReviewBoard-2.5.6.1 uwsgi RBTools \
       uwsgi-plugin-python python-ldap python-pip python2-boto && \
