@@ -14,14 +14,14 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
 
 Alternatively, here are the commands to do the same manually.
 
+    # Create a data container for reviewboard with ssh credentials, media and PostgreSQL data.
+    docker run -v /root/.ssh -v /media -v /var/lib/postgresql/data --name rb-data busybox true
+
     # Install postgres
-    docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
+    docker run -d --name rb-postgres --volumes-from rb-data -e POSTGRES_USER=reviewboard postgres
 
     # Install memcached
     docker run --name rb-memcached -d memcached memcached -m 2048
-
-    # Create a data container for reviewboard with ssh credentials and media.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
 
     # Run reviewboard
     docker run -it --link rb-postgres:pg --link rb-memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
@@ -44,7 +44,9 @@ You can install postgres either into a docker container, or whereever else.
 
 1. Example: install postgres into a docker container, and create a database for reviewboard.
 
-        docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
+        docker run -d --name rb-postgres --volumes-from rb-data -e POSTGRES_USER=reviewboard postgres
+    
+    You need to backup PostgreSQL data to a volume, in order to preserve it over
 
 2. Example: install postgres into the host machine, example given for a Debian/Ubuntu based distribution.
 
