@@ -18,7 +18,7 @@ Alternatively, here are the commands to do the same manually.
     docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
 
     # Install memcached
-    docker run --name rb-memcached -d sylvainlasnier/memcached
+    docker run --name rb-memcached -d memcached memcached -m 2048
 
     # Create a data container for reviewboard with ssh credentials and media.
     docker run -v /root/.ssh -v /media --name rb-data busybox true
@@ -61,7 +61,9 @@ You can install postgres either into a docker container, or whereever else.
 
 1. Example: install into a docker container
 
-        docker run --name memcached -d sylvainlasnier/memcached
+        docker run --name memcached -d memcached memcached -m 2048
+    
+    Reviewboard documentation suggests to set at least 2GB of RAM to memcached
 
 1. Example: install locally on Debian/Ubuntu.
 
