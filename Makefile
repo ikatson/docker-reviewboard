@@ -6,7 +6,7 @@ build:
 	docker build -t "$(DOCKER_TAG)" .
 
 clean:
-	docker rm -f rb-server rb-memcached rb-postgres rb-data
+	docker rm -fv rb-server rb-memcached rb-postgres rb-data
 
 run:
 	docker create --name rb-data -v /root/.ssh -v /media -v /var/lib/postgresql/data busybox || true
