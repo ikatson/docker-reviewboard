@@ -15,7 +15,7 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
 Alternatively, here are the commands to do the same manually.
 
     # Create a data container for reviewboard with ssh credentials, media and PostgreSQL data.
-    docker run -v /root/.ssh -v /media -v /var/lib/postgresql/data --name rb-data busybox true
+    docker create -v /root/.ssh -v /media -v /var/lib/postgresql/data --name rb-data busybox true
 
     # Install postgres
     docker run -d --name rb-postgres --volumes-from rb-data -e POSTGRES_USER=reviewboard postgres
@@ -97,7 +97,7 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 ### Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
     # Create a data container.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
+    docker create -v /root/.ssh -v /media --name rb-data busybox true
     docker run -it --name rb-server --link rb-postgres:pg --link memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
 
 ### Example. Run with postgres and memcached installed on the host machine.
@@ -105,7 +105,7 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
     DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
     # Create a data container.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
+    docker create -v /root/.ssh -v /media --name rb-data busybox true
     docker run -it --name rb-server -p 8000:8080 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
