@@ -1,4 +1,4 @@
-DOCKER_TAG ?= ikatson/reviewboard
+DOCKER_TAG ?= ikatson/reviewboard:2.5.6.1
 
 all: build
 
