@@ -1,5 +1,8 @@
 DOCKER_TAG ?= ikatson/reviewboard:2.5.6.1
 
+
+.PHONY: all build clean run
+
 all: build
 
 build:
