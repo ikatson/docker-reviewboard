@@ -17,6 +17,5 @@ services:
         environment:
             - PGHOST=postgres
             - MEMCACHED=memcached:11211
-            - DEBUG=true
         ports:
             - 8000:8000
