@@ -1,0 +1,22 @@
+version: '2'
+services:
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_USER=reviewboard
+    memcached:
+        image: sylvainlasnier/memcached
+    reviewboard:
+        build: ./
+        volumes:
+            - /root/.ssh
+            - /media
+        depends_on:
+            - postgres
+            - memcached
+        environment:
+            - PGHOST=postgres
+            - MEMCACHED=memcached:11211
+            - DEBUG=true
+        ports:
+            - 8000:8000

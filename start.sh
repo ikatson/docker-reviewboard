@@ -1,5 +1,4 @@
 #!/bin/bash
-
 PGUSER="${PGUSER:-reviewboard}"
 PGPASSWORD="${PGPASSWORD:-reviewboard}"
 PGDB="${PGDB:-reviewboard}"
@@ -15,6 +14,14 @@ MEMCACHED_LINKED_NOTCP="${MEMCACHED_PORT#tcp://}"
 MEMCACHED="${MEMCACHED:-$( echo "${MEMCACHED_LINKED_NOTCP:-127.0.0.1}" )}"
 
 DOMAIN="${DOMAIN:localhost}"
+
+# Wait for postgresql rediness
+until psql -h "${PGHOST}" -U "postgres" -c '\l'; do
+  echo "Postgres is unavailable - sleeping"
+  sleep 1
+done
+echo "Postgres is up!"
+
 
 mkdir -p /var/www/
 
