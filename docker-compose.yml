@@ -5,7 +5,7 @@ services:
         environment:
             - POSTGRES_USER=reviewboard
     memcached:
-        image: sylvainlasnier/memcached
+        image: memcached
     reviewboard:
         build: ./
         volumes:
@@ -17,5 +17,6 @@ services:
         environment:
             - PGHOST=postgres
             - MEMCACHED=memcached:11211
+            - WAIT_FOR_POSTGRES=true
         ports:
             - 8000:8000

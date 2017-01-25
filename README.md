@@ -5,12 +5,16 @@ Dockerized reviewboard. This container follows Docker's best practices, and DOES
 
 The requirements are PostgreSQL and memcached, you can use either dockersized versions of them, or external ones, e.g. installed on the host machine, or even third-party machines.
 
-## Quickstart. Run dockerized reviewboard with all dockerized dependencies, and persistent data in a docker container.
+## Quickstart. Run dockerized reviewboard with all dockerized dependencies, and persistent data in docker containers.
 
+### Using Makefile
     make  # if you want to build the image yourself
     make run
 
-    # Go to http://127.0.0.1:8000/ (or your docker host) and login as admin:admin
+### Using docker-compose
+    docker-compose up
+
+Then go to http://127.0.0.1:8000/ (or your docker host) and login as admin:admin
 
 Alternatively, here are the commands to do the same manually.
 

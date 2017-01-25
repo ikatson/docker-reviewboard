@@ -15,13 +15,18 @@ MEMCACHED="${MEMCACHED:-$( echo "${MEMCACHED_LINKED_NOTCP:-127.0.0.1}" )}"
 
 DOMAIN="${DOMAIN:localhost}"
 
-# Wait for postgresql rediness
-until psql -h "${PGHOST}" -U "postgres" -c '\l'; do
-  echo "Postgres is unavailable - sleeping"
-  sleep 1
-done
-echo "Postgres is up!"
+if [[  "${WAIT_FOR_POSTGRES}" = "true" ]]; then
 
+    echo "Waiting for Postgres readiness..."
+    export PGUSER PGHOST PGPORT PGPASSWORD
+
+    until psql "${PGDB}"; do
+        echo "Postgres is unavailable - sleeping"
+        sleep 1
+    done
+    echo "Postgres is up!"
+
+fi
 
 mkdir -p /var/www/
 
