@@ -28,6 +28,16 @@ if [[  "${WAIT_FOR_POSTGRES}" = "true" ]]; then
 
 fi
 
+if [[ "${SITE_ROOT}" ]]; then
+    if [[ "${SITE_ROOT}" != "/" ]]; then
+        # Add trailing and leading slashes to SITE_ROOT if it's not there.
+        SITE_ROOT="${SITE_ROOT#/}"
+        SITE_ROOT="/${SITE_ROOT%/}/"
+    fi
+else
+    SITE_ROOT=/
+fi
+
 mkdir -p /var/www/
 
 CONFFILE=/var/www/reviewboard/conf/settings_local.py
@@ -35,7 +45,8 @@ CONFFILE=/var/www/reviewboard/conf/settings_local.py
 if [[ ! -d /var/www/reviewboard ]]; then
     rb-site install --noinput \
         --domain-name="$DOMAIN" \
-        --site-root=/ --static-url=static/ --media-url=media/ \
+        --site-root="$SITE_ROOT" \
+        --static-url=static/ --media-url=media/ \
         --db-type=postgresql \
         --db-name="$PGDB" \
         --db-host="$PGHOST" \
@@ -50,5 +61,7 @@ if [[ "${DEBUG}" ]]; then
     sed -i 's/DEBUG *= *False/DEBUG=True/' "$CONFFILE"
     cat "${CONFFILE}"
 fi
+
+export SITE_ROOT
 
 exec uwsgi --ini /uwsgi.ini

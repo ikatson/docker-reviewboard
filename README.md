@@ -90,6 +90,7 @@ The container accepts the following environment variables:
 - ```MEMCACHED``` - memcache address in format ```host:port```. Defaults to the value from linked ```memcached``` container.
 - ```DOMAIN``` - defaults to ```localhost```.
 - ```DEBUG``` - if set, the django server will be launched in debug mode.
+- ```SITE_ROOT``` - the path of the site, relative to the domain. This should start and end with a ```/```. For example, ```/reviews/```. Defaults to ```/```.
 
 Also, uwsgi accepts environment prefixed with ```UWSGI_``` for it's configuration
 E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
