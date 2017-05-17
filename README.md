@@ -18,17 +18,17 @@ Then go to http://127.0.0.1:8000/ (or your docker host) and login as admin:admin
 
 Alternatively, here are the commands to do the same manually.
 
+    # Create a data container for reviewboard with ssh credentials, media and PostgreSQL data.
+    docker create -v /root/.ssh -v /media -v /var/lib/postgresql/data --name rb-data busybox true
+
     # Install postgres
-    docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
+    docker run -d --name rb-postgres --volumes-from rb-data -e POSTGRES_USER=reviewboard postgres
 
     # Install memcached
-    docker run --name rb-memcached -d -p 11211 sylvainlasnier/memcached
-
-    # Create a data container for reviewboard with ssh credentials and media.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
+    docker run --name rb-memcached -d memcached memcached -m 2048
 
     # Run reviewboard
-    docker run -it --link rb-postgres:pg --link rb-memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
+    docker run -it --name rb-server --link rb-postgres:pg --link rb-memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
 
 After that, go the url, e.g. ```http://localhost:8000/```, login as ```admin:admin```, change the admin password, and change the location of your SMTP server so that the reviewboard can send emails. You are all set!
 
@@ -48,7 +48,9 @@ You can install postgres either into a docker container, or whereever else.
 
 1. Example: install postgres into a docker container, and create a database for reviewboard.
 
-        docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
+        docker run -d --name rb-postgres --volumes-from rb-data -e POSTGRES_USER=reviewboard postgres
+    
+    You need to backup PostgreSQL data to a volume, in order to preserve it over
 
 2. Example: install postgres into the host machine, example given for a Debian/Ubuntu based distribution.
 
@@ -65,7 +67,9 @@ You can install postgres either into a docker container, or whereever else.
 
 1. Example: install into a docker container
 
-        docker run --name memcached -d -p 11211 sylvainlasnier/memcached
+        docker run --name memcached -d memcached memcached -m 2048
+    
+    Reviewboard documentation suggests to set at least 2GB of RAM to memcached
 
 1. Example: install locally on Debian/Ubuntu.
 
@@ -98,16 +102,16 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 ### Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
     # Create a data container.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
-    docker run -it --link rb-postgres:pg --link memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
+    docker create -v /root/.ssh -v /media --name rb-data busybox true
+    docker run -it --name rb-server --link rb-postgres:pg --link memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
 
 ### Example. Run with postgres and memcached installed on the host machine.
 
     DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
     # Create a data container.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
-    docker run -it -p 8000:8080 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+    docker create -v /root/.ssh -v /media --name rb-data busybox true
+    docker run -it --name rb-server -p 8000:8080 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
 
