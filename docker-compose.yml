@@ -1,11 +1,11 @@
 version: '2'
 services:
     postgres:
-        image: postgres
+        image: postgres:alpine
         environment:
             - POSTGRES_USER=reviewboard
     memcached:
-        image: memcached
+        image: memcached:alpine
     reviewboard:
         build: ./
         volumes:
