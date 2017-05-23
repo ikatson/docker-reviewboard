@@ -8,7 +8,7 @@ The requirements are PostgreSQL and memcached, you can use either dockersized ve
 ## Quickstart. Run dockerized reviewboard with all dockerized dependencies, and persistent data in docker containers.
 
 ### Using Makefile
-    make  # if you want to build the image yourself
+    make build  # if you want to build the image yourself
     make run
 
 ### Using docker-compose
@@ -19,10 +19,10 @@ Then go to http://127.0.0.1:8000/ (or your docker host) and login as admin:admin
 Alternatively, here are the commands to do the same manually.
 
     # Install postgres
-    docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
+    docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres:alpine
 
     # Install memcached
-    docker run --name rb-memcached -d -p 11211 sylvainlasnier/memcached
+    docker run --name rb-memcached -d -p 11211 memcached:alpine
 
     # Create a data container for reviewboard with ssh credentials and media.
     docker run -v /root/.ssh -v /media --name rb-data busybox true
@@ -48,7 +48,7 @@ You can install postgres either into a docker container, or whereever else.
 
 1. Example: install postgres into a docker container, and create a database for reviewboard.
 
-        docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres
+        docker run -d --name rb-postgres -e POSTGRES_USER=reviewboard postgres:alpine
 
 2. Example: install postgres into the host machine, example given for a Debian/Ubuntu based distribution.
 
@@ -65,7 +65,7 @@ You can install postgres either into a docker container, or whereever else.
 
 1. Example: install into a docker container
 
-        docker run --name memcached -d -p 11211 sylvainlasnier/memcached
+        docker run --name memcached -d -p 11211 memcached:alpine
 
 1. Example: install locally on Debian/Ubuntu.
 
