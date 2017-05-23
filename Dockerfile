@@ -6,10 +6,8 @@ MAINTAINER igor.katson@gmail.com
 RUN yum install -y pyliblzma
 
 RUN yum install -y epel-release && \
-    yum install -y ReviewBoard-2.5.7 uwsgi RBTools \
+    yum install -y ReviewBoard-2.5.10 uwsgi \
       uwsgi-plugin-python python-ldap python-pip python2-boto && \
-    yum install -y https://kojipkgs.fedoraproject.org//packages/python-publicsuffix/1.1.0/1.el7/noarch/python2-publicsuffix-1.1.0-1.el7.noarch.rpm && \
-    yum install -y https://kojipkgs.fedoraproject.org//packages/python-djblets/0.9.4/3.el7/noarch/python-djblets-0.9.4-3.el7.noarch.rpm && \
     yum install -y postgresql && \
     yum clean all
 
