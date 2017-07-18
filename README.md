@@ -121,3 +121,11 @@ For example, if you use ```postfix```, you should change ```/etc/postfix/main.cf
 
     mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 172.17.0.0/16
     inet_interfaces = 127.0.0.1,172.17.42.1
+
+### Proxy Settings
+If your server sits behind a proxy, you will mostly likely have issues downloading the packages. To get around this be sure to set the proxy settings within the Docker file.
+
+```
+ENV http_proxy proxy-address.com:port
+ENV https_proxy proxy-address.com:port
+```
