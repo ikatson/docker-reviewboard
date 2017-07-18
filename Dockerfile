@@ -1,6 +1,10 @@
 FROM centos:7
 MAINTAINER igor.katson@gmail.com
 
+# Proxy Settings
+ENV http_proxy proxy.esl.cisco.com:80
+ENV https_proxy proxy.esl.cisco.com:80
+
 # This is needed in for xz compression in case you can't install EPEL.
 # See https://github.com/ikatson/docker-reviewboard/issues/10
 RUN yum install -y pyliblzma
