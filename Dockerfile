@@ -5,9 +5,8 @@ MAINTAINER igor.katson@gmail.com
 # See https://github.com/ikatson/docker-reviewboard/issues/10
 RUN yum install -y pyliblzma
 
-# --setopt=tsflags=nodocs is for https://github.com/docker/hub-feedback/issues/461
 RUN yum install -y epel-release && \
-    yum install -y --setopt=tsflags=nodocs ReviewBoard uwsgi \
+    yum install -y ReviewBoard uwsgi \
       uwsgi-plugin-python python-ldap python-pip python2-boto && \
     yum install -y postgresql && \
     yum clean all
