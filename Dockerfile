@@ -6,14 +6,14 @@ MAINTAINER igor.katson@gmail.com
 RUN yum install -y pyliblzma
 
 RUN yum install -y epel-release && \
-    yum install -y ReviewBoard python-pygments uwsgi \
+    yum install -y ReviewBoard uwsgi \
       uwsgi-plugin-python python-ldap python-pip python2-boto && \
     yum install -y postgresql && \
     yum clean all
 
 # ReviewBoard runs on django 1.6, so we need to use a compatible django-storages
 # version for S3 support.
-RUN pip install 'django-storages<1.3'
+RUN pip install -U pip && pip install 'pygments>2.0' 'django-storages<1.3'
 
 ADD start.sh /start.sh
 ADD uwsgi.ini /uwsgi.ini
