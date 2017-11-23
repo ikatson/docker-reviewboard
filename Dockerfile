@@ -13,7 +13,9 @@ RUN yum install -y epel-release && \
 
 # ReviewBoard runs on django 1.6, so we need to use a compatible django-storages
 # version for S3 support.
-RUN pip install -U pip && pip install 'pygments>2.0' 'django-storages<1.3'
+RUN pip install -U pip && \
+    rm -rf /usr/lib/python2.7/site-packages/Pygments-2.2.0-py2.7.egg && \
+    pip install 'pygments>2.0' 'django-storages<1.3'
 
 ADD start.sh /start.sh
 ADD uwsgi.ini /uwsgi.ini
