@@ -42,7 +42,7 @@ mkdir -p /var/www/
 
 CONFFILE=/var/www/reviewboard/conf/settings_local.py
 
-#Installation script of web-site 
+# Installation script of web-site 
 rb-site install --noinput --domain-name=* --site-root=/ --media-url=/media/ --db-type=postgresql --db-host=rb-postgres --db-name=reviewboard --db-user=reviewboard --db-pass=reviewboard --cache-type=memcached --cache-info=rb-memcached:11211 --admin-user=admin --admin-password=12345Qwert --admin-email=test@test.com /var/www/reviewboard
 
 if [[ "${DEBUG}" ]]; then
