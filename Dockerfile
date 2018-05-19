@@ -8,12 +8,13 @@ RUN apt-get update -y && \
         uwsgi uwsgi-plugin-python \
         postgresql-client \
         python-psycopg2 \
-        git-core mercurial subversion python-svn
-
+        git-core mercurial subversion python-svn && \
+        rm -rf /var/lib/apt/lists/*
 
 RUN python -m virtualenv /opt/venv && \
     . /opt/venv/bin/activate && \
-    pip install ReviewBoard 'django-storages<1.3'
+    pip install ReviewBoard 'django-storages<1.3' && \
+    rm -rf /root/.cache
 
 ENV PATH="/opt/venv/bin:${PATH}"
 
