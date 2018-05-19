@@ -1,21 +1,22 @@
-FROM centos:7
+FROM ubuntu:18.04
 MAINTAINER igor.katson@gmail.com
 
-# This is needed in for xz compression in case you can't install EPEL.
-# See https://github.com/ikatson/docker-reviewboard/issues/10
-RUN yum install -y pyliblzma
+RUN apt-get update -y && \
+    apt-get install --no-install-recommends -y \
+        build-essential python-dev libffi-dev libssl-dev patch \
+        python-pip python-setuptools python-wheel python-virtualenv \
+        uwsgi uwsgi-plugin-python \
+        postgresql-client \
+        python-psycopg2 \
+        git-core mercurial subversion python-svn && \
+        rm -rf /var/lib/apt/lists/*
 
-RUN yum install -y epel-release && \
-    yum install -y ReviewBoard uwsgi \
-      uwsgi-plugin-python python-ldap python-pip python2-boto && \
-    yum install -y postgresql && \
-    yum clean all
+RUN python -m virtualenv /opt/venv && \
+    . /opt/venv/bin/activate && \
+    pip install ReviewBoard 'django-storages<1.3' && \
+    rm -rf /root/.cache
 
-# ReviewBoard runs on django 1.6, so we need to use a compatible django-storages
-# version for S3 support.
-RUN pip install -U pip && \
-    rm -rf /usr/lib/python2.7/site-packages/Pygments-2.2.0-py2.7.egg && \
-    pip install 'pygments>2.0' 'django-storages<1.3'
+ENV PATH="/opt/venv/bin:${PATH}"
 
 ADD start.sh /start.sh
 ADD uwsgi.ini /uwsgi.ini
