@@ -7,11 +7,11 @@ RUN apt-get update -y && \
         python-pip python-setuptools python-wheel python-virtualenv \
         uwsgi uwsgi-plugin-python \
         postgresql-client \
-        python-psycopg2 \
+        python-psycopg2 python-ldap \
         git-core mercurial subversion python-svn && \
         rm -rf /var/lib/apt/lists/*
 
-RUN python -m virtualenv /opt/venv && \
+RUN python -m virtualenv --system-site-packages /opt/venv && \
     . /opt/venv/bin/activate && \
     pip install ReviewBoard 'django-storages<1.3' && \
     rm -rf /root/.cache

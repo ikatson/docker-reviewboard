@@ -9,4 +9,4 @@ clean:
 	docker-compose down
 
 run:
-	docker-compose up
+	docker-compose up --build
