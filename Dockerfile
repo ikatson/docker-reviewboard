@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER igor.katson@gmail.com
 
+ARG RB_VERSION
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
         build-essential python-dev libffi-dev libssl-dev patch \
@@ -13,7 +14,7 @@ RUN apt-get update -y && \
 
 RUN python -m virtualenv --system-site-packages /opt/venv && \
     . /opt/venv/bin/activate && \
-    pip install ReviewBoard 'django-storages<1.3' && \
+    pip install ReviewBoard==${RB_VERSION} 'django-storages<1.3' && \
     rm -rf /root/.cache
 
 ENV PATH="/opt/venv/bin:${PATH}"
