@@ -107,7 +107,7 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
     # Create a data container.
     docker run -v /root/.ssh -v /media --name rb-data busybox true
-    docker run -it -p 8000:8080 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+    docker run -it -p 8000:8000 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
 
