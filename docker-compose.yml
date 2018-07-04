@@ -9,8 +9,7 @@ services:
     reviewboard:
         build: ./
         volumes:
-            - /root/.ssh
-            - /media
+            - /var/www/
         depends_on:
             - postgres
             - memcached
