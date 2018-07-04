@@ -13,7 +13,7 @@ RUN apt-get update -y && \
         rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
-    if echo "${RB_VERSION}" | egrep -q '^[0-9]'; then RB_VERSION="==${RB_VERSION}"; else RB_VERSION=''; fi; \
+    if [[ "${RB_VERSION}" ]]; then RB_VERSION="==${RB_VERSION}"; fi; \
     python -m virtualenv --system-site-packages /opt/venv; \
     . /opt/venv/bin/activate; \
     pip install "ReviewBoard${RB_VERSION}" 'django-storages<1.3'; \
