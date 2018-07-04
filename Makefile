@@ -1,5 +1,5 @@
 DOCKER_TAG ?= ikatson/reviewboard
-RB_VERSION = 3.0.7
+RB_VERSION ?= $(shell git rev-parse --abbrev-ref HEAD)
 
 all: build
 

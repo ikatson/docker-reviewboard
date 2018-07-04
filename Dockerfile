@@ -12,9 +12,11 @@ RUN apt-get update -y && \
         git-core mercurial subversion python-svn && \
         rm -rf /var/lib/apt/lists/*
 
-RUN python -m virtualenv --system-site-packages /opt/venv && \
-    . /opt/venv/bin/activate && \
-    pip install ReviewBoard==${RB_VERSION} 'django-storages<1.3' && \
+RUN set -ex; \
+    if echo "${RB_VERSION}" | egrep -q '^[0-9]'; then RB_VERSION="==${RB_VERSION}"; else RB_VERSION=''; fi; \
+    python -m virtualenv --system-site-packages /opt/venv; \
+    . /opt/venv/bin/activate; \
+    pip install "ReviewBoard${RB_VERSION}" 'django-storages<1.3'; \
     rm -rf /root/.cache
 
 ENV PATH="/opt/venv/bin:${PATH}"
