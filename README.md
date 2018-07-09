@@ -113,3 +113,8 @@ For example, if you use ```postfix```, you should change ```/etc/postfix/main.cf
 
     mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 172.17.0.0/16
     inet_interfaces = 127.0.0.1,172.17.42.1
+
+## Upgrading
+
+Upgrading to a new ReviewBoard version is as simple as pulling and running the latest image (or use a specific tag).
+The upgrade will be detected at runtime and `rb-site upgrade` will be executed. See: https://www.reviewboard.org/docs/manual/dev/admin/upgrading/upgrading-sites

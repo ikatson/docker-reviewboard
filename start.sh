@@ -57,6 +57,9 @@ if [[ ! -d /var/www/reviewboard ]]; then
         --admin-user=admin --admin-password=admin --admin-email=admin@example.com \
         /var/www/reviewboard/
 fi
+
+/upgrade-site.py /var/www/reviewboard/rb-version /var/www/reviewboard
+
 if [[ "${DEBUG}" ]]; then
     sed -i 's/DEBUG *= *False/DEBUG=True/' "$CONFFILE"
     cat "${CONFFILE}"

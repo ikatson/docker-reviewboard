@@ -16,7 +16,7 @@ RUN set -ex; \
     if [ "${RB_VERSION}" ]; then RB_VERSION="==${RB_VERSION}"; fi; \
     python -m virtualenv --system-site-packages /opt/venv; \
     . /opt/venv/bin/activate; \
-    pip install "ReviewBoard${RB_VERSION}" 'django-storages<1.3'; \
+    pip install "ReviewBoard${RB_VERSION}" 'django-storages<1.3' semver; \
     rm -rf /root/.cache
 
 ENV PATH="/opt/venv/bin:${PATH}"
@@ -24,8 +24,9 @@ ENV PATH="/opt/venv/bin:${PATH}"
 ADD start.sh /start.sh
 ADD uwsgi.ini /uwsgi.ini
 ADD shell.sh /shell.sh
+ADD upgrade-site.py /upgrade-site.py
 
-RUN chmod +x start.sh shell.sh
+RUN chmod +x /start.sh /shell.sh /upgrade-site.py
 
 VOLUME /var/www/
 
