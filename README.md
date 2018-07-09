@@ -24,11 +24,8 @@ Alternatively, here are the commands to do the same manually.
     # Install memcached
     docker run --name rb-memcached -d -p 11211 memcached:alpine
 
-    # Create a data container for reviewboard with ssh credentials and media.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
-
-    # Run reviewboard
-    docker run -it --link rb-postgres:pg --link rb-memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
+    # Run reviewboard with a named volume to hold your site's data
+    docker run -it -v reviewboard-site:/var/www/ --link rb-postgres:pg --link rb-memcached:memcached -p 8000:8000 ikatson/reviewboard
 
 After that, go the url, e.g. ```http://localhost:8000/```, login as ```admin:admin```, change the admin password, and change the location of your SMTP server so that the reviewboard can send emails. You are all set!
 
@@ -75,10 +72,9 @@ You can install postgres either into a docker container, or whereever else.
 
 ## Run reviewboard
 
-This container has two volume mount-points:
+This container has one volume mount-point:
 
-- ```/root/.ssh``` - The default path to where reviewboard stores it's ssh keys.
-- ```/media``` - The default path to where reviewboard stores uploaded media.
+- `/var/www/` - The path where the reviewboard site resides, this includes it's ssh keys and uploaded media.
 
 The container accepts the following environment variables:
 
@@ -97,17 +93,13 @@ E.g. ```-e UWSGI_PROCESSES=10``` will create 10 reviewboard processes.
 
 ### Example. Run with dockerized postgres and memcached from above, expose on port 8000:
 
-    # Create a data container.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
-    docker run -it --link rb-postgres:pg --link memcached:memcached --volumes-from rb-data -p 8000:8000 ikatson/reviewboard
+    docker run -it -v reviewboard-site:/var/www/ --link rb-postgres:pg --link memcached:memcached -p 8000:8000 ikatson/reviewboard
 
 ### Example. Run with postgres and memcached installed on the host machine.
 
     DOCKER_HOST_IP=$( ip addr | grep 'inet 172.1' | awk '{print $2}' | sed 's/\/.*//')
 
-    # Create a data container.
-    docker run -v /root/.ssh -v /media --name rb-data busybox true
-    docker run -it -p 8000:8080 --volumes-from rb-data -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
+    docker run -it -v reviewboard-site:/var/www/ -p 8000:8080 -e PGHOST="$DOCKER_HOST_IP" -e PGPASSWORD=123 -e PGUSER=reviewboard -e MEMCACHED="$DOCKER_HOST_IP":11211 ikatson/reviewboard
 
 Now, go to the url, e.g. ```http://localhost:8000/```, login as ```admin:admin``` and change the password. The reviewboard is almost ready to use!
 
