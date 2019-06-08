@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER igor.katson@gmail.com
 
-ARG RB_VERSION
+ENV RB_VERSION 3.0.14
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
         build-essential python-dev libffi-dev libssl-dev patch \
