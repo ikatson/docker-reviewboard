@@ -4,6 +4,7 @@ services:
         image: postgres:alpine
         environment:
             - POSTGRES_USER=reviewboard
+            - POSTGRES_PASSWORD=reviewboard
     memcached:
         image: memcached:alpine
     reviewboard:
@@ -15,6 +16,7 @@ services:
             - memcached
         environment:
             - PGHOST=postgres
+            - PGPASSWORD=reviewboard
             - MEMCACHED=memcached:11211
             - WAIT_FOR_POSTGRES=true
         ports:
