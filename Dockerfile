@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER igor.katson@gmail.com
 
-ENV RB_VERSION 3.0.14
+ENV RB_VERSION
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
         build-essential python-dev libffi-dev libssl-dev patch \
@@ -16,7 +16,7 @@ RUN set -ex; \
     if [ "${RB_VERSION}" ]; then RB_VERSION="==${RB_VERSION}"; fi; \
     python -m virtualenv --system-site-packages /opt/venv; \
     . /opt/venv/bin/activate; \
-    pip install "ReviewBoard${RB_VERSION}" 'django-storages<1.3' semver; \
+    pip install "ReviewBoard${RB_VERSION}" 'django-storages<1.3' oauthlib==1.0.1 semver; \
     rm -rf /root/.cache
 
 ENV PATH="/opt/venv/bin:${PATH}"
