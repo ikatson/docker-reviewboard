@@ -1,9 +1,13 @@
-docker-reviewboard
-==================
+# docker-reviewboard
 
 Dockerized reviewboard. This container follows Docker's best practices, and DOES NOT include sshd, supervisor, apache2, or any other services except the reviewboard itself which is run with ```uwsgi```.
 
 The requirements are PostgreSQL and memcached, you can use either dockersized versions of them, or external ones, e.g. installed on the host machine, or even third-party machines.
+
+### Disclaimer
+I'm neither a user nor maintainer of reviewboard itself. 
+I created this repo a few years back to test reviewboard out, and did not use it since then. Seems like a lot of people find it useful, so in my spare time I try to fix whatever people are complaining about. Luckily it wasn't too bad so far in terms of support volume, so I'm ok with that.
+But if you are missing some features, or having trouble, please file a PR as I'm usually too busy to respond promptly.
 
 ## Quickstart. Run dockerized reviewboard with all dockerized dependencies, and persistent data in docker containers.
 
