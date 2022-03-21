@@ -9,6 +9,7 @@ services:
         image: memcached:alpine
     reviewboard:
         build: ./
+        restart: always
         volumes:
             - /var/www/
         depends_on:
